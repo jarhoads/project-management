@@ -8,17 +8,29 @@ function App() {
   const [projectsState, setProjectsState] = useState({selectedProjectId: undefined, projects: []});
 
   function handleStartAddProject(params) {
-    setProjectsState(prevState => { return {...prevState, selectedProjectId: null}; });
-  }
-
-  function handleAddProject(projectData) {
-    setProjectsState(prevState => {
-      const newProject = { ...projectData, id: Math.random() };
-      return {...prevState, projects: [...prevState.projects, newProject]}; 
+    setProjectsState(prevState => { 
+      return {
+        ...prevState,
+        selectedProjectId: null
+      }; 
     });
   }
 
-  console.log(`!!##--> projectState: ${JSON.stringify(projectsState)}`);
+  function handleAddProject(projectData) {
+
+    setProjectsState(prevState => {
+      const projectId = Math.random();
+      const newProject = { ...projectData, id: projectId };
+      
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: [...prevState.projects, newProject]
+      }; 
+    });
+  }
+
+  // console.log(`!!##--> projectState: ${JSON.stringify(projectsState)}`);
 
   let content;
   if (projectsState.selectedProjectId === null) {
@@ -30,7 +42,7 @@ function App() {
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <ProjectsSidebar onStartAddProject={handleStartAddProject} />
+      <ProjectsSidebar onStartAddProject={handleStartAddProject} projects={projectsState.projects}/>
       {content}
     </main>
   );
